@@ -1,0 +1,6 @@
+.swc
+dist
+public
+node_modules
+coverage
+.vscode

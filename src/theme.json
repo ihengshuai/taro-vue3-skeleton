@@ -1,0 +1,18 @@
+{
+  "light": {
+    "whiteOrBlack": "white",
+    "mode": "light",
+    "backgroundColor": "#fff",
+    "navBgColor": "#646cff",
+    "tabBgColor": "#fff",
+    "navTextColor": "black"
+  },
+  "dark": {
+    "whiteOrBlack": "black",
+    "mode": "dark",
+    "backgroundColor": "#333",
+    "navBgColor": "#000",
+    "tabBgColor": "#222",
+    "navTextColor": "white"
+  }
+}
