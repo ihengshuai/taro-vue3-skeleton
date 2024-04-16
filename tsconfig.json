@@ -25,6 +25,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src", "./typings"],
+  "include": ["./src", "./src/typings"],
   "compileOnSave": false
 }
