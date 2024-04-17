@@ -12,10 +12,11 @@ import {
   NecessaryErrorInterceptor,
   LogReqInterceptor,
 } from "../interceptor";
+import Taro from "@tarojs/taro";
 
 export class HttpClientFrequently extends HttpClient {
   private static _instance: HttpClientFrequently;
-  private static _requestInstance: Uni["request"];
+  private static _requestInstance: typeof Taro.request;
 
   private static _interceptors: Interceptor[] = [];
 
@@ -32,7 +33,7 @@ export class HttpClientFrequently extends HttpClient {
 
   static get requestInstance() {
     if (!this._requestInstance) {
-      this._requestInstance = uni.request;
+      this._requestInstance = Taro.request;
     }
     return this._requestInstance;
   }
@@ -96,10 +97,9 @@ export class HttpClientFrequently extends HttpClient {
       const requestPayload = {
         ...(requestConfig as any),
         header: requestConfig.headers,
-      } as Parameters<Uni["request"]>;
+      } as Parameters<typeof Taro.request>[0];
 
       const requestTask = HttpClientFrequently.requestInstance({
-        url: requestConfig.url!,
         ...requestPayload,
         success(result) {
           const responseData = {
@@ -120,7 +120,9 @@ export class HttpClientFrequently extends HttpClient {
             });
         },
         fail: async err => {
-          if (err && err.errMsg === WRONG_MESSAGE.ABORT) return err;
+          if (err && err.errMsg === WRONG_MESSAGE.ABORT) {
+            return new Error(`request abort: ${requestPayload.url}`);
+          }
 
           const request = requestConfig.$request!;
           if (request?.retryCount && request.retryCount > 0) {

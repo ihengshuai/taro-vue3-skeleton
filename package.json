@@ -58,6 +58,7 @@
     "@tarojs/taro": "3.6.23",
     "axios": "^1.6.8",
     "pinia": "^2.0.10",
+    "qs": "6.5.3",
     "vue": "^3.2.24"
   },
   "devDependencies": {
@@ -66,6 +67,7 @@
     "@tarojs/taro-loader": "3.6.23",
     "@tarojs/webpack5-runner": "3.6.23",
     "@types/node": "^18.15.11",
+    "@types/qs": "^6.9.14",
     "@types/webpack-env": "^1.13.6",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",

@@ -1,6 +1,6 @@
 {
   "miniprogramRoot": "dist/weapp/",
-  "projectname": "taro-study",
+  "projectname": "taro-vue3-skeleton",
   "description": "emtry",
   "setting": {
     "urlCheck": true,

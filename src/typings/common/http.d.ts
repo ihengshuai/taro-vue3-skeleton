@@ -1,4 +1,5 @@
 import { HTTP_DATA_TYPE, InterceptorType } from "@/constants/http";
+import Taro from "@tarojs/taro";
 import { AxiosRequestConfig } from "axios";
 
 export abstract class Interceptor {
@@ -48,57 +49,52 @@ export interface IInterceptorData {
   };
 }
 
-// https://zh.uniapp.dcloud.io/api/request/request.html#request
-/** 小程序uni请求参数 */
+// https://docs.taro.zone/docs/apis/network/request/
+/** 小程序taro请求参数 */
 export interface IMiniProgramRequestConfig {
-  /**
-   * 验证 ssl 证书
-   */
-  sslVerify?: boolean;
-  /**
-   * DNS解析时优先使用 ipv4
-   */
-  firstIpv4?: boolean;
-  /**
-   * 开启 http2
+  /** 响应的数据类型 */
+  responseType?: keyof ResponseType;
+  /** 开启 http2
+   * @default false
+   * @supported weapp
    */
   enableHttp2?: boolean;
-  /**
-   * 开启 quic
+  /** 开启 quic
+   * @default false
+   * @supported weapp
    */
   enableQuic?: boolean;
-  /**
-   * 开启 cache
+  /** 开启 cache
+   * @default false
+   * @supported weapp, tt
    */
   enableCache?: boolean;
-  /**
-   * 是否开启 HttpDNS 服务。如开启，需要同时填入 httpDNSServiceId 。 HttpDNS 用法详见 [移动解析HttpDNS](https://developers.weixin.qq.com/miniprogram/dev/framework/ability/HTTPDNS.html)
+  /** 是否开启 HttpDNS 服务。如开启，需要同时填入 httpDNSServiceId 。 HttpDNS 用法详见 移动解析HttpDNS
+   * @default false
+   * @supported weapp
    */
   enableHttpDNS?: boolean;
-  /**
-   * HttpDNS 服务商 Id。 HttpDNS 用法详见 [移动解析HttpDNS](https://developers.weixin.qq.com/miniprogram/dev/framework/ability/HTTPDNS.html)
+  /** HttpDNS 服务商 Id。 HttpDNS 用法详见 移动解析HttpDNS
+   * @supported weapp
    */
-  httpDNSServiceId?: boolean;
-  /**
-   * 开启 transfer-encoding chunked
+  httpDNSServiceId?: string;
+  /** 开启 transfer-encoding chunked。
+   * @default false
+   * @supported weapp
    */
   enableChunked?: boolean;
   /**
    * wifi下使用移动网络发送请求
+   * @default false
+   * @supported weapp
    */
   forceCellularNetwork?: boolean;
   /**
-   * 默认 false，开启后可在headers中编辑cookie（支付宝小程序10.2.33版本开始支持）
+   * headers 中设置 cookie 字段是否生效。如果为 false，则 headers 中的 cookie 字段将被忽略，请求头中将包含服务端上一次返回的 cookie（如果有）。
+   * @default false
+   * @supported alipay 支付宝: 10.2.33+
    */
   enableCookie?: boolean;
-  /**
-   * 是否开启云加速（详见[云加速服务](https://smartprogram.baidu.com/docs/develop/extended/component-codeless/cloud-speed/introduction/)）
-   */
-  cloudCache?: object | boolean;
-  /**
-   * 控制当前请求是否延时至首屏内容渲染后发送
-   */
-  defer?: boolean;
 }
 
 interface IUploadFileOptionFiles {
@@ -187,7 +183,7 @@ export interface IHttpRequestConfig extends AxiosRequestConfig, IMiniProgramRequ
    * 绑定当前请求参数配置（仅内部使用）
    */
   $request?: IHttpRequestConfig;
-  signal?: UniApp.RequestTask;
+  signal?: ReturnType<typeof Taro.request>;
 
   /**
    * 请求标识，方便日志查询

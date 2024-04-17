@@ -1,6 +1,6 @@
 {
   "miniprogramRoot": "./",
-  "projectname": "taro-study",
+  "projectname": "taro-vue3-skeleton",
   "description": "emtry",
   "appid": "touristappid",
   "setting": {

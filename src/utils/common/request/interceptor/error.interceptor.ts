@@ -2,6 +2,7 @@ import { InterceptorType, WRONG_MESSAGE } from "@/constants/http";
 import type { IHttpError, Interceptor } from "@/typings/common/http";
 import { trimStrSpace } from "@/utils";
 import { HttpStatusCode } from "axios";
+import Taro from "@tarojs/taro";
 
 /** 错误处理拦截器 */
 export class NecessaryErrorInterceptor implements Interceptor {
@@ -24,14 +25,14 @@ export class NecessaryErrorInterceptor implements Interceptor {
         message = "请求地址不存在";
       }
       if (config?.captureError !== false) {
-        uni.showToast({
+        Taro.showToast({
           title: message,
           icon: "none",
         });
       }
     } /* 业务错误 */ else {
       if (config?.captureError !== false) {
-        uni.showToast({
+        Taro.showToast({
           title: err.message,
           icon: "none",
         });
