@@ -40,13 +40,7 @@ async function bootstrap() {
   });
 
   await app.listen(config.PORT, () => {
-    console.log(`Application is running on ${config.PORT} port.\n`);
-    console.log(`   - Current Env：${config.NODE_ENV}.`);
-    console.log(
-      `   - Client Server： ${config.__isHttps__ ? "https" : "http"}://localhost:${
-        config.PORT
-      } (若配置了域名请换成域名)\n`
-    );
+    console.log(`Mock Server is running on ${config.PORT} port.\n`);
   });
 }
 

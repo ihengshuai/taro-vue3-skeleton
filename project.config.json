@@ -3,10 +3,10 @@
   "projectname": "taro-vue3-skeleton",
   "description": "emtry",
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": true,
     "enhance": true,
-    "compileHotReLoad": true,
+    "compileHotReLoad": false,
     "postcss": false,
     "minified": true,
     "babelSetting": {
@@ -16,7 +16,7 @@
     }
   },
   "compileType": "miniprogram",
-  "libVersion": "3.3.4",
+  "libVersion": "3.4.1",
   "srcMiniprogramRoot": "dist/weapp/",
   "packOptions": {
     "ignore": [],

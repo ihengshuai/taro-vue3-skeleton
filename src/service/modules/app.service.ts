@@ -1,5 +1,5 @@
 import { useConfig } from "@/config";
-import { IUserInfo } from "@/typings/business/user.interceface";
+import type { IUserInfo } from "@/typings/business/user.interceface";
 import { HttpClientFrequently } from "@/utils";
 
 const { USE_MOCK, MOCK_API, API_DOMAIN, __isDev__ } = useConfig();

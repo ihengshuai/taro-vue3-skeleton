@@ -1,8 +1,9 @@
 import type { IHttpRequestConfig } from "@/typings/common/http";
+import Taro from "@tarojs/taro";
 
 export class CancelToken {
   private static _instance: CancelToken;
-  private _tokenStorage: Map<string, AbortController | UniApp.RequestTask>;
+  private _tokenStorage: Map<string, AbortController | ReturnType<typeof Taro.request>>;
 
   constructor() {
     this._tokenStorage = new Map();
@@ -27,14 +28,14 @@ export class CancelToken {
     const key = this.getTokenKey(config);
     const ctor = this._tokenStorage.get(key);
     if (ctor) {
-      ctor.abort();
+      ctor?.abort?.();
     }
     this._tokenStorage.delete(key);
   }
 
   clear() {
     for (const [, ctor] of this._tokenStorage.entries()) {
-      ctor.abort();
+      ctor?.abort?.();
     }
     this._tokenStorage.clear();
   }

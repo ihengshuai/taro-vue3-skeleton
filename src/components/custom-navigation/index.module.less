@@ -1,0 +1,55 @@
+// 最外部容器
+.layout__navigation {
+  background: #fff;
+  box-sizing: border-box;
+  padding: 0 20rpx;
+  // border-bottom: 1px solid #efefef;
+
+  // 导航固定
+  &--fixed {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+  }
+
+  // 顶部左侧菜单
+  &__back {
+    font-size: 32rpx;
+
+    &__menu {
+      // width: 40rpx;
+      font-size: 38rpx;
+      cursor: pointer;
+    }
+  }
+
+  // h5平台
+  &.h5 {
+    padding: 12rpx 20rpx;
+  }
+}
+// 状态栏
+.layout__navigation__bar {
+  width: 100%;
+  height: var(--system-status-bar-height, 40rpx);
+}
+// 导航栏
+.layout__navigation__body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--mini-bar-height, 40rpx);
+}
+.layout__navigation__title {
+  padding: 0 16rpx;
+  flex: 1;
+  text-align: center;
+}
+.layout__navigation__left {
+  width: 150rpx;
+}
+.layout__navigation__right {
+  width: 150rpx;
+}
