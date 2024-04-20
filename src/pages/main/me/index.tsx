@@ -26,6 +26,9 @@ export default defineComponent({
     return () => (
       // <PageMain>
       <View>
+        <View style="margin: 100px 0;font-size: 48rpx;text-align: center;color: salmon;">
+          <Text>当前页使用了异步分包</Text>
+        </View>
         <Text>当前时间: {nowDate.value}</Text>
         <View />
         <Text>md5编码: {str.value}</Text>

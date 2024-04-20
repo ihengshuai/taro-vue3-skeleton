@@ -1,10 +1,10 @@
 # Taro vue3 skeleton
 
-相关功能正在补充中...
+由于Taro Vue3有很多bug，相关功能正在补充中...
 
 本项目基于Vue3、Vite、Typescript、NestJS等技术打造的的taro项目模板，模板中没有过多冗余的文件和逻辑，开发者可以快速进行开发和适配。为提高开发效率，项目提供了nest本地mock服务；同时为降低项目上线成本，项目中也提供了小程序自动发包工具，可以一键上传到小程序后台，以及其它功能
 
-相关参考: [uniapp-vue3-skeleton](https://github.com/ihengshuai/uniapp-vue3-ts-skeleton)
+参考uniapp模板: [uniapp-vue3-skeleton](https://github.com/ihengshuai/uniapp-vue3-ts-skeleton)
 
 ## 配置
 项目中使用env配置文件进行环境变量区分，默认直接拷贝`.env.example`内容到`.env`文件即可。其他环境变量配置，请熟悉变量配置逻辑后自行添加
@@ -52,52 +52,45 @@ pnpm build:weapp
 mock服务使用可以参考我的[博客](https://blog.usword.cn/frontend/nestjs/base.html)
 
 ## 异步分包
-由于uniapp对小程序的异步分包功能支持有问题，顾项目中通过自定义脚本来解决异步分包功能
+由于taro对小程序的异步分包功能支持有问题，顾项目中通过自定义脚本来解决异步分包功能
 
 异步分包主要是来解决第三方包或者某个库的体积过大导致打包体积过大的问题，让其拆出去作为一个单独的包，在业务处使用异步加载的方式引用，这样异步包不会被计算进当前包的体积大小中
 
 使用约束：
 - 每个异步包应导出单独的第三方库，尽量不要包含多个库
 - 异步包应以通用的规范命名，这样在项目中也能通俗易懂
-- 异步分包一定要配置uniapp的`pages.json`文件，因为小程序默认会读取打包后的`app.json`，当内容不匹配时会报错；在`subPackages`中配置`root`属性，指定分包的根目录，以及`pages: []`这个必须要写，脚本要判断
-- 异步加载使用
 
 ### 示例
-1. 假如考虑到moment这个库体积太大，很影响包的体积大小，那就可以采用异步分包形式将其拆分，这里以`pure-库名-lib/index.ts`命名为例：
+1. 假如考虑到moment这个库体积太大，很影响包的体积大小，那就可以采用异步分包形式将其拆分，这里以`package/库名/index.ts`命名为例：
 
 ```ts
-// src/pure-moment-lib/index.ts
+// src/package/moment/index.ts
 
-import moment from 'moment';
-export default moment;
-```
+import moment from "moment";
 
-2. 在`pages.json`中配置异步包
-```json
-{
-  "subPackages": [
-    // 省略其他pages
-    {
-      "root": "pure-moment-lib",
-      "pages": [], // 注意这里一定要为空数组
-    }
-  ]
+export function formatDate(date: Date | string, format: string) {
+  return moment(date).format(format);
 }
 ```
 
-3. 在项目中使用，下面会对比下使用异步分包后的使用比较：
+2. 在项目中使用，下面会对比下使用异步分包后的使用比较：
 ```ts
 // 使用异步分包前
 import moment from 'moment';
-const now = moment();
+const now = moment().format("YYYY-MM-DD");
 
 // 使用异步分包后
 let now;
-require
+__require__
   .async("~/pure-moment-lib/index.js")
   .then(res => {
     now = res.default();
   })
+__non_webpack_require__ &&
+  __non_webpack_require__("~/package-moment/index.js", res => {
+    console.log("moment加载成功,", res);
+    now = res.formatDate(new Date(), "YYYY-MM-DD HH:mm:ss");
+  });
 ```
 
 ### 使用效果
