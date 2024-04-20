@@ -2,7 +2,7 @@ import { defineComponent } from "vue";
 import { Button, Text, View } from "@tarojs/components";
 import "./index.less";
 import { useLoad } from "@tarojs/taro";
-import { fetchAppData } from "@/service/modules/app.service";
+import { fetchHomeData } from "@/service/modules/app.service";
 
 export default defineComponent({
   setup() {
@@ -11,7 +11,7 @@ export default defineComponent({
     });
 
     function requestData() {
-      fetchAppData().then(res => {
+      fetchHomeData().then(res => {
         console.log(res);
       });
     }

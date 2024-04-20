@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["__mock__/**/*"],
+  "exclude": ["node_modules", "test", "dist", "./src/**/*", "vite.config.*", "**/*spec.ts", "./public"]
+}

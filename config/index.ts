@@ -1,8 +1,42 @@
+import dotenv from "dotenv";
 import path from "path";
 import { defineConfig } from "@tarojs/cli";
+import webpack from "webpack";
+import { spawn } from "child_process";
 
-const resolvePath = (p: string) => path.resolve(__dirname, "..", p);
+const __isDev__ = process.env.NODE_ENV === "development";
+const rootDir = process.cwd();
+const resolvePath = (p = "") => path.resolve(rootDir, p);
 const platform = process.env.TARO_ENV;
+
+const parsedConfig =
+  dotenv.config({
+    path: __isDev__ ? resolvePath(".env") : resolvePath(".env.production"),
+    override: true,
+  })?.parsed || ({} as any);
+
+if (__isDev__ && parsedConfig.USE_MOCK === "true") {
+  try {
+    spawn("pnpm", ["run", "mock"], {
+      stdio: "inherit",
+      shell: true,
+    });
+  } catch (err) {
+    console.error(err);
+    process.exit(0);
+  }
+}
+
+const ENV_VARS = {
+  NODE_ENV: JSON.stringify(parsedConfig.NODE_ENV || "development"),
+  BASE_URL: JSON.stringify(parsedConfig.BASE_URL),
+  TIMEOUT: JSON.stringify(parsedConfig.TIMEOUT),
+  USE_MOCK: JSON.stringify(parsedConfig.USE_MOCK),
+  MOCK_API: JSON.stringify(parsedConfig.MOCK_API),
+  COOKIE_DOMAIN: JSON.stringify(parsedConfig.COOKIE_DOMAIN),
+  API_DOMAIN: JSON.stringify(parsedConfig.API_DOMAIN),
+  APP_ID: JSON.stringify(parsedConfig.APP_ID || ""),
+};
 
 const config = defineConfig({
   projectName: "taro-study",
@@ -33,6 +67,7 @@ const config = defineConfig({
   },
   mini: {
     webpackChain(chain) {
+      chain.plugin("DefinePlugin").use(new webpack.DefinePlugin(ENV_VARS));
       chain.merge({
         module: {
           rule: {
@@ -84,6 +119,9 @@ const config = defineConfig({
           generateScopedName: "[name]__[local]___[hash:base64:5]",
         },
       },
+    },
+    webpackChain: chain => {
+      chain.plugin("DefinePlugin").use(new webpack.DefinePlugin(ENV_VARS));
     },
   },
 });

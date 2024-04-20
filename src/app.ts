@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 
 import "./app.less";
+import { useConfig } from "./config";
 
 const App = createApp({
   // @ts-ignore
@@ -15,5 +16,7 @@ const App = createApp({
 });
 
 App.use(createPinia());
+
+console.log(useConfig());
 
 export default App;

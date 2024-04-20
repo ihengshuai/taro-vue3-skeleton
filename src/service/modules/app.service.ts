@@ -1,13 +1,21 @@
+import { useConfig } from "@/config";
+import { IUserInfo } from "@/typings/business/user.interceface";
 import { HttpClientFrequently } from "@/utils";
 
-const httpInstance = HttpClientFrequently.instance;
-httpInstance.setUserConfig({
-  baseURL: "https://localhost:10011/api/mock/global-data",
-  // baseURL: "https://mockx.apifox1.com/ssdf/xxefault"
-});
+const { USE_MOCK, MOCK_API, API_DOMAIN, __isDev__ } = useConfig();
 
-export async function fetchAppData() {
-  return httpInstance.get("", {
-    retryCount: 3,
+const BASE_URL = __isDev__ && USE_MOCK && !!MOCK_API ? MOCK_API : API_DOMAIN;
+const httpInstance = HttpClientFrequently.instance;
+httpInstance.setUserConfig({ baseURL: BASE_URL });
+
+const APP_API = {
+  HOME: `/api/mock/global-data`,
+};
+
+export function fetchHomeData() {
+  return httpInstance.get<IUserInfo>(APP_API.HOME, {
+    label: "全局请求",
+    transferToCamel: true,
+    timeStamp: true,
   });
 }
