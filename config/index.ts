@@ -3,6 +3,8 @@ import path from "path";
 import { defineConfig } from "@tarojs/cli";
 import webpack from "webpack";
 import { spawn } from "child_process";
+// @ts-ignore
+import BuildAsyncPackagePlugin from "../scripts/webpack-async-package-plugin";
 
 const __isDev__ = process.env.NODE_ENV === "development";
 const rootDir = process.cwd();
@@ -63,11 +65,12 @@ const config = defineConfig({
   framework: "vue3",
   compiler: "webpack5",
   cache: {
-    enable: true, // Webpack 持久化缓存配置，建议开启。默认配置请参考：https://docs.taro.zone/docs/config-detail#cache
+    enable: false, // Webpack 持久化缓存配置，建议开启。默认配置请参考：https://docs.taro.zone/docs/config-detail#cache
   },
   mini: {
     webpackChain(chain) {
       chain.plugin("DefinePlugin").use(new webpack.DefinePlugin(ENV_VARS));
+      chain.plugin("BuildAsyncPackagePlugin").use(new BuildAsyncPackagePlugin());
       chain.merge({
         module: {
           rule: {
