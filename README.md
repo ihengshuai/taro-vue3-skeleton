@@ -58,13 +58,14 @@ mock服务使用可以参考我的[博客](https://blog.usword.cn/frontend/nestj
 
 使用约束：
 - 每个异步包应导出单独的第三方库，尽量不要包含多个库
-- 异步包应以通用的规范命名，这样在项目中也能通俗易懂
+- 异步包应以通用的规范命名，必须以`packages/库名/index.ts`格式设置异步包
+- 异步加载使用
 
 ### 示例
-1. 假如考虑到moment这个库体积太大，很影响包的体积大小，那就可以采用异步分包形式将其拆分，这里以`package/库名/index.ts`命名为例：
+1. 假如考虑到moment这个库体积太大，很影响包的体积大小，那就可以采用异步分包形式将其拆分，这里以`packages/库名/index.ts`命名为例：
 
 ```ts
-// src/package/moment/index.ts
+// src/packages/moment/index.ts
 
 import moment from "moment";
 
@@ -81,11 +82,6 @@ const now = moment().format("YYYY-MM-DD");
 
 // 使用异步分包后
 let now;
-__require__
-  .async("~/pure-moment-lib/index.js")
-  .then(res => {
-    now = res.default();
-  })
 __non_webpack_require__ &&
   __non_webpack_require__("~/package-moment/index.js", res => {
     console.log("moment加载成功,", res);
@@ -96,7 +92,7 @@ __non_webpack_require__ &&
 ### 使用效果
 项目中在分包`pages-h5`中使用了momentjs，采用异步分包后，可以看到分包已经降到了`3kb`，这对后续业务变得复杂包体积考虑不再是问题
 
-![](https://ihengshuai-demo1.oss-cn-beijing.aliyuncs.com/mp-bundler-analyzer.png)
+![](https://ihengshuai-demo1.oss-cn-beijing.aliyuncs.com/mp-bundler-analyze.png)
 
 ## 自动化助手
 项目提供了小程序的自动化助手，旨在帮助开发者快速进行小程序的发布，尤其是sass系统或多平台的小程序会占用开发者大量的时间，安装依赖会默认生成一份ci配置文件
